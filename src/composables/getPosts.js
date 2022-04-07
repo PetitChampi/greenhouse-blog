@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 
 const getPosts = () => {
-
   const posts = ref([])
   const error = ref(null)
 
