@@ -1,4 +1,6 @@
 import { ref } from 'vue'
+import { db } from '../firebase/config'
+import { doc, getDoc } from "firebase/firestore"
 
 const getPost = (id) => {
   const post = ref(null)
@@ -6,16 +8,14 @@ const getPost = (id) => {
 
   const load = async () => {
     try {
-      // simulate delay
-      await new Promise(resolve => {
-        setTimeout(resolve, 500)
-      })
+      const postId = doc(db, 'posts', id)
+      const docSnap = await getDoc(postId)
 
-      let data = await fetch(`http://localhost:3000/posts/${id}`)
-      if(!data.ok) {
-        throw Error('that post does not exist')
+      if (!docSnap.exists()) {
+        throw Error("This post doesn't exist")
       }
-      post.value = await data.json()
+
+      post.value = { ...docSnap.data(), id: docSnap.id }
     }
     catch(err) {
       error.value = err.message

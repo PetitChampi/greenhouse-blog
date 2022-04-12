@@ -17,7 +17,7 @@ import getPost from '../composables/getPost'
 export default {
   props: ['id'],
   components: { Spinner },
-  setup(props) {
+  setup() {
     const route = useRoute()
 
     const { post, error, load } = getPost(route.params.id)
